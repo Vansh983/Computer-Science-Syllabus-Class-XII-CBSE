@@ -1,0 +1,87 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+class item
+{ int bno;
+char bname[20];
+int price;
+public:
+void enter()
+{
+cout<<"Enter Bno - ";
+cin>>bno;
+cout<<"Enter Bname - ";
+cin>>bname;
+cout<<"Enter Price - ";
+cin>>price;
+}
+void display()
+{
+cout<<"Bno - " <<"Bname - "<< "Price - "; }
+int bnum()
+{
+return bno;
+} }; main()
+{
+fstream afile,temp;
+item z;
+int i,n,t=7,f=0,bno1;
+while(t!=0)
+{
+cout<<"Press 1 to enter record\nPress 2 to display record\nPress 3 to modify record\nPress 0 to exit\n";
+cin>>t;
+if(t==1)
+{
+cout<<"Enter number of records - ";
+cin>>n;
+afile.open("item.dat",ios::out);
+for(i=0;i<n;i++)
+{
+z.enter();
+afile.write((char*)&z,sizeof(item));
+}
+afile.close();
+} if(t==2)
+{
+afile.open("item.dat",ios::in);
+while(afile)
+{
+afile.read((char*)&z,sizeof(item));
+if(!afile)
+{
+break;
+}
+z.display();
+}
+afile.close();
+} if(t==3)
+{
+afile.open("item.dat",ios::in);
+temp.open("temp1.dat",ios::out);
+cout<<"Enter Bno of record to be modified - ";
+cin>>bno1;
+while(afile)
+{
+afile.read((char*)&z,sizeof(item));
+if(!afile)
+{
+break;
+} if(bno1!=z.bnum())
+{ temp.write((char*)&z,sizeof(item));
+} if(bno1==z.bnum())
+{
+z.display();
+temp.write((char*)&z,sizeof(item));
+}}
+afile.close();
+temp.close();
+afile.open("item.dat",ios::out);
+temp.open("temp1.dat",ios::in);
+while(temp)
+{ temp.read((char*)&z,sizeof(item));
+afile.write((char*)&z,sizeof(item));
+}
+afile.close();
+temp.close();
+}}}
